@@ -25,7 +25,7 @@
 #' @import DelayedArray
 #' @import DelayedMatrixStats
 #' @import DSS
-#' @import GenomeInfoDb
+#' @import Seqinfo
 #' @import GenomicRanges
 #' @import IRanges
 #' @import parallel
