@@ -1,6 +1,6 @@
 Package: methylSig
 Title: MethylSig: Differential Methylation Testing for WGBS and RRBS Data
-Version: 1.24.0
+Version: 1.25.0
 Date: 2025-07-28
 Authors@R:
     c(person(given = "Yongseok",
