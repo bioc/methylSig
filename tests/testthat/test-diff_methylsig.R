@@ -357,3 +357,19 @@ test_that('Test 6', {
 
     expect_true(is(diff_gr, 'GRanges'))
 })
+
+test_that('Untested loci are dropped', {
+    # Tiles from position 1 onward, most with no coverage, and so untested
+    diff_gr = suppressMessages(diff_methylsig(
+        bs = tile_by_windows(bs = small_test, win_size = 100),
+        group_column = 'Type',
+        comparison_groups = c('case' = 'cancer', 'control' = 'normal'),
+        disp_groups = c('case' = TRUE, 'control' = TRUE),
+        local_window_size = 0,
+        t_approx = TRUE,
+        n_cores = 1))
+
+    expect_gt(length(diff_gr), 0)
+    expect_false(anyNA(diff_gr$pvalue))
+    expect_true(all(diff_gr$df > 3))
+})

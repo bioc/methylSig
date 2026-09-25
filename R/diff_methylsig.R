@@ -463,13 +463,13 @@ diff_methylsig = function(
 
     #####################################
 
-    # Check for NA results and indicate how many loci were dropped because of
-    # a lack of available degrees of freedom
-    insufficient_df = result_gr$df == 1
+    # Drop loci that weren't tested because they had too few degrees of freedom
+    # (df <= 1), which have NA results, and indicate how many
+    insufficient_df = is.na(result_gr$log_lik_ratio)
 
     if(sum(insufficient_df) > 0) {
         result_gr = result_gr[!insufficient_df]
-        message(sprintf('%s loci were dropped due to insufficient degrees of freedom (df = 1).', sum(insufficient_df)))
+        message(sprintf('%s loci were dropped due to insufficient degrees of freedom (df <= 1).', sum(insufficient_df)))
     }
 
     return(result_gr)

@@ -1,3 +1,9 @@
+Changes in 1.24.1 (2026-09-25)
++ diff_methylsig() drops every locus it can't test because of too few degrees
+  of freedom. Before, only loci with df = 1 were dropped, and loci with df = 0,
+  e.g. tiles with no coverage, were returned with NA results (issues #47 and
+  #56).
+
 Changes in 0.99.0 (2020-03-23)
 + Refactor functions and workflow from pre-0.99.0 releases
   o methylSigReadData() replaced with the functions:
