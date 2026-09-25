@@ -1,3 +1,9 @@
+Changes in 1.24.3 (2026-09-25)
++ diff_binomial() used every sample in the pooled model under the null
+  hypothesis, not only the samples in case and control. With other groups in
+  group_column, the likelihood ratio statistic was wrong. Results with only
+  the case and control samples are unchanged.
+
 Changes in 1.24.2 (2026-09-25)
 + diff_methylsig() used the wrong log likelihood for the unmethylated reads
   when local information was used (local_window_size > 0): the term was

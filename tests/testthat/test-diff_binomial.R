@@ -126,3 +126,15 @@ test_that('Test 2', {
 
     expect_true(is(diff_gr, 'GRanges'))
 })
+
+test_that('Samples outside case and control are not used', {
+    three_groups = small_test
+    pData(three_groups)$Group = c('cancer', 'cancer', 'other', 'normal', 'normal', 'other')
+    comparison_groups = c('case' = 'cancer', 'control' = 'normal')
+
+    with_other = diff_binomial(three_groups, 'Group', comparison_groups)
+    without_other = diff_binomial(
+        three_groups[, pData(three_groups)$Group != 'other'], 'Group', comparison_groups)
+
+    expect_equal(with_other, without_other)
+})

@@ -109,15 +109,18 @@ diff_binomial = function(
     meth_mat = as.matrix(bsseq::getCoverage(bs, type = 'M'))
 
     # Setup required quantities for the log_lik_ratio calculation
-    unmeth_reads = rowSums(cov_mat - meth_mat, na.rm = TRUE)
+    # Only the samples in case and control are used, in the pooled (null)
+    # model too
+    test_idx = c(case_idx, control_idx)
+    unmeth_reads = rowSums(cov_mat[, test_idx, drop = FALSE] - meth_mat[, test_idx, drop = FALSE], na.rm = TRUE)
     unmeth_reads_control = rowSums(cov_mat[,control_idx] - meth_mat[,control_idx], na.rm = TRUE)
     unmeth_reads_case = rowSums(cov_mat[,case_idx] - meth_mat[,case_idx], na.rm = TRUE)
 
-    meth_reads = rowSums(meth_mat, na.rm = TRUE)
+    meth_reads = rowSums(meth_mat[, test_idx, drop = FALSE], na.rm = TRUE)
     meth_reads_control = rowSums(meth_mat[,control_idx], na.rm = TRUE)
     meth_reads_case = rowSums(meth_mat[,case_idx], na.rm = TRUE)
 
-    cov = rowSums(cov_mat, na.rm = TRUE)
+    cov = rowSums(cov_mat[, test_idx, drop = FALSE], na.rm = TRUE)
     cov_control = rowSums(cov_mat[,control_idx], na.rm=TRUE)
     cov_case = rowSums(cov_mat[,case_idx], na.rm=TRUE)
 
