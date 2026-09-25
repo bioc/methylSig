@@ -1,3 +1,11 @@
+Changes in 1.24.2 (2026-09-25)
++ diff_methylsig() used the wrong log likelihood for the unmethylated reads
+  when local information was used (local_window_size > 0): the term was
+  missing the dispersion, lgamma((1 - mu) + 1e-100) instead of
+  lgamma((1 - mu) * phi + 1e-100). This inflated the likelihood ratio
+  statistic and gave many false positives. Results with
+  local_window_size = 0 are unchanged.
+
 Changes in 1.24.1 (2026-09-25)
 + diff_methylsig() drops every locus it can't test because of too few degrees
   of freedom. Before, only loci with df = 1 were dropped, and loci with df = 0,
