@@ -237,3 +237,30 @@ test_that('Valid return, simple model tiled, methylation check', {
     expect_true(is(diff_gr, 'GRanges'))
 
 })
+
+test_that('Methylation rates come from the fit loci of bs, in order', {
+    run = function(bs) {
+        suppressMessages(diff_dss_test(
+            bs = bs,
+            diff_fit = diff_fit,
+            contrast = matrix(c(0, 1), ncol = 1),
+            methylation_group_column = 'Type',
+            methylation_groups = c('case' = 'cancer', 'control' = 'normal')))
+    }
+    expected = run(small_test)
+
+    # More loci than were fit, and the fit loci in another order
+    expect_equal(run(bs[1:100]), expected)
+    expect_equal(run(small_test[rev(seq_along(small_test))]), expected)
+
+    expect_error(
+        run(small_test[1:40]),
+        '10 of the 50 loci in diff_fit$gr are not in bs. Use the bs given to diff_dss_fit().',
+        fixed = TRUE
+    )
+    expect_error(
+        run(small_test[, 1:4]),
+        'bs has 4 samples, but diff_fit$design has 6 rows. Use the bs given to diff_dss_fit().',
+        fixed = TRUE
+    )
+})

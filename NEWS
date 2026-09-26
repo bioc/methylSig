@@ -1,3 +1,10 @@
+Changes in 1.24.4 (2026-09-26)
++ diff_dss_test() takes the methylation rates from the loci of bs that match
+  diff_fit$gr, in that order. Before, it used every locus of bs, so a bs with
+  more loci than the fit gave an error, and a bs with the same number of loci
+  in another order gave rates for the wrong loci. It errors if bs is missing
+  fit loci or has a different number of samples than diff_fit$design.
+
 Changes in 1.24.3 (2026-09-25)
 + diff_binomial() used every sample in the pooled model under the null
   hypothesis, not only the samples in case and control. With other groups in

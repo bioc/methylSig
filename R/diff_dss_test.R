@@ -166,11 +166,21 @@ diff_dss_test = function(
 
         }
 
-        # Subset bs by what was fit
-        result_bs = subsetByOverlaps(bs, diff_fit$gr)
+        # Use the loci of bs that were fit, in the order of diff_fit$gr, so bs
+        # must have the samples and the loci that were fit
+        if (ncol(bs) != nrow(diff_fit$design)) {
+            stop(sprintf('bs has %s samples, but diff_fit$design has %s rows. Use the bs given to diff_dss_fit().',
+                ncol(bs), nrow(diff_fit$design)))
+        }
+        fit_idx = match(diff_fit$gr, granges(bs))
+        if (anyNA(fit_idx)) {
+            stop(sprintf('%s of the %s loci in diff_fit$gr are not in bs. Use the bs given to diff_dss_fit().',
+                sum(is.na(fit_idx)), length(fit_idx)))
+        }
+        result_bs = bs[fit_idx]
 
-        cov_reads_mat = bsseq::getCoverage(bs, type = 'Cov')
-        meth_reads_mat = bsseq::getCoverage(bs, type = 'M')
+        cov_reads_mat = bsseq::getCoverage(result_bs, type = 'Cov')
+        meth_reads_mat = bsseq::getCoverage(result_bs, type = 'M')
 
         # Compute case, control, and methylation difference
         meth_case = (DelayedMatrixStats::rowSums2(
